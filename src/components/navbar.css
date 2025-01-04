@@ -1,0 +1,28 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #035ff3, #f0dc2e);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.932);
+}
+
+.navbar-links {
+  display: flex;
+  background: #035ff3;
+  gap: 20px;
+}
+
+.navbar-links li {
+  display: inline;
+  color: black;
+}
+
+.navbar-links a {
+  color: black;
+  font-size: 18px;
+}
+
+.navbar-links a:hover {
+  color: #ffeb3b;
+}

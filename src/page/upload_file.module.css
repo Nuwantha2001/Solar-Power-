@@ -1,0 +1,90 @@
+.uploadFileApp {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: #01172e;
+  min-height: 100vh;
+}
+
+.uploadFileHeader {
+  text-align: center;
+  color: #69e958;
+  margin-bottom: 20px;
+}
+
+.uploadFileInput {
+  display: block;
+  margin: 20px auto;
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.uploadFileButton {
+  width: 60%;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-left: 20%;
+  font-size: 18px;
+  color: #110101;
+  background: rgb(241, 240, 240);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.uploadFileButton:hover {
+  background: lightblue;
+  color: black;
+}
+
+.loadingBar {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #f6fa06;
+  text-align: center;
+}
+
+.uploadFileSummaryHeader {
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.tableContainer {
+  max-width: 80%;
+  overflow-x: auto;
+  margin: 20px auto;
+  background-color: rgba(129, 128, 138, 0.781);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.uploadFileTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  text-align: left;
+  border: 2px solid #fff9f9;
+}
+
+.uploadFileTable th, .uploadFileTable td {
+  padding: 10px;
+  border: 2px solid #fff9f9;
+}
+
+.uploadFileTable th {
+  background-color: #007bff;
+  color: #110101;
+}
+
+.uploadFileTable tr:nth-child(even) {
+  background-color: #176279;
+}
