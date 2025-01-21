@@ -37,7 +37,7 @@ app.post('/upload', (req, res) => {
   console.log('Received data:', parsedData);
 
   // Validate the data
-  if (parsedData || Array.isArray(parsedData)) {
+  if (!Array.isArray(parsedData) || parsedData.length === 0) {
     return res.status(400).json({ message: 'Invalid data format.' });
   }
   // Prepare the query and values for bulk insertion

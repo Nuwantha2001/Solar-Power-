@@ -56,6 +56,7 @@ const UploadFile = () => {
   };
 
   const handleUpload = async () => {
+    console.log("Summary being uploaded:", summary);
     try {
       const response = await axios.post("http://localhost:5000/upload", summary);
       alert("Data uploaded successfully");
