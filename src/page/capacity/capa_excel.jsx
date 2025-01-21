@@ -1,12 +1,12 @@
+
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import axios from "axios";
-import styles from "./upload_file.module.css";
+import styles from '/src/page/upload_file.module.css';
 
-const UploadFile = () => {
+const capa_excel = () => {
   const [summary, setSummary] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [timeRange, setTimeRange] = useState("");
 
   const handleFileUpload = (file) => {
     const reader = new FileReader();
@@ -16,35 +16,21 @@ const UploadFile = () => {
         const workbook = XLSX.read(data, { type: "array" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-        const timeRange = sheet["B2"]?.v;
-        if (!timeRange) {
-          alert("Invalid file: Time Range not found.");
-          setLoading(false);
-          return;
-        }
-
-        if (localStorage.getItem("uploadedTimeRange") === timeRange) {
-          alert("This file has already been uploaded.");
-          setLoading(false);
-          return;
-        }
-        localStorage.setItem("uploadedTimeRange", timeRange);
-
-        setTimeRange(timeRange);
-
-        const parsedData = XLSX.utils.sheet_to_json(sheet, { range: 12 });
+        const parsedData = XLSX.utils.sheet_to_json(sheet, { range: 0 });
         const parsedSummary = parsedData
-          .filter( (row) => row["Site ID"]?.trim().toLowerCase() !== null && row["Solar Supply (kWh)"] <= 100)
+          .filter( (row) => row["Site ID"]?.trim().toLowerCase() !== null && row["Capacity(kW)"] <= 50)
           .map((row, index) => ({
             index: index + 1,
-            site: row.Site,
             site_id: row["Site ID"],
-            date: row.Date,
-            solar_supply_kwh:
-              row["Solar Supply (kWh)"] === "N/A" ||
-              row["Solar Supply (kWh)"] == null
+            site: row["Site name"],
+            sub_region: row["Sub Region"],
+            capacity:
+              row["Capacity(kW)"] === "N/A" ||
+              row["Capacity(kW)"] == null
                 ? 0
-                : parseFloat(row["Solar Supply (kWh)"])
+                : parseFloat(row["Capacity(kW)"]),
+            max: row["Max Generated"],
+            avg: row["Average Generated"]
           }));
 
         setSummary(parsedSummary);
@@ -59,9 +45,9 @@ const UploadFile = () => {
   };
 
   const handleUpload = async () => {
-    console.log("Summary being uploaded:", summary, timeRange);
+    console.log("Summary being uploaded:", summary);
     try {
-      const response = await axios.post("http://localhost:5000/upload", { timeRange, parsedData: summary });
+      const response = await axios.post("http://localhost:5000/cap-upload", { summary });
       alert("Data uploaded successfully");
     } catch (error) {
       console.error("Error uploading data", error);
@@ -83,7 +69,7 @@ const UploadFile = () => {
 
   return (
     <div className={styles.uploadFileApp}>
-      <h1 className={styles.uploadFileHeader}>Solar Power Management</h1>
+      <h1 className={styles.uploadFileHeader}>Solar Site Capacity </h1>
       <input type="file" accept=".xlsx, .xls" onChange={handleFileChange} className={styles.uploadFileInput}/>
       {loading && <div className={styles.loadingBar}>Processing...</div>}
       <button onClick={handleUpload} disabled={loading || summary.length === 0} className={styles.uploadFileButton}>
@@ -91,27 +77,31 @@ const UploadFile = () => {
       {summary.length > 0 && (
         <div>
           <h2 className={styles.uploadFileSummaryHeader}>
-            Daily Connected Sites Details
+           Connected Sites Details
           </h2>
           <div className={styles.tableContainer}>
             <table className={styles.uploadFileTable} border="1">
               <thead>
                 <tr>
                   <th>No:</th>
-                  <th>Sites</th>
                   <th>Site ID</th>
-                  <th>Date</th>
-                  <th>Solar Supply (kWh)</th>
+                  <th>Sites</th>
+                  <th>Sub Region</th>
+                  <th>Capacity</th>
+                  <th>Max Geneartion</th>
+                  <th>Ang Generation</th>
                 </tr>
               </thead>
               <tbody>
                 {summary.map((row) => (
                   <tr key={row.index}>
                     <td>{row.index}</td>
-                    <td>{row.site}</td>
                     <td>{row.site_id}</td>
-                    <td>{row.date}</td>
-                    <td>{row.solar_supply_kwh}</td>
+                    <td>{row.site}</td>
+                    <td>{row.sub_region}</td>
+                    <td>{row.capacity}</td>
+                    <td>{row.max}</td>
+                    <td>{row.avg}</td>
                   </tr>
                 ))}
               </tbody>
@@ -123,4 +113,4 @@ const UploadFile = () => {
   );
 };
 
-export default UploadFile;
+export default capa_excel;
